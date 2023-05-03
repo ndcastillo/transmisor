@@ -1,46 +1,49 @@
+const https = require('https');
 function getRandomNumber(max){
     return Math.floor(Math.random()*max);
 }
 
 // console.log(getRandomNumber(125))
 
-try{
-    const datosCodificados = {
-        "3001": getRandomNumber(120),
-        "3002": getRandomNumber(110),
-        "3003": getRandomNumber(60),
-        "3004": getRandomNumber(11),
-        "3005": getRandomNumber(16),
-        "3006": getRandomNumber(123),
-        "3007": getRandomNumber(178),
-        "3008": getRandomNumber(10),
-        "3009": getRandomNumber(60),
-        "3010": getRandomNumber(14),
-    }
+setInterval(
+    ()=>{
+        try{
+            const axios = require('axios');
+let data = JSON.stringify({
+  "timestamp": new Date().getTime(),
+  "data": [
+    getRandomNumber(101),
+    getRandomNumber(60),
+    getRandomNumber(175),
+    getRandomNumber(62),
+    getRandomNumber(302),
+    getRandomNumber(306),
+    getRandomNumber(604),
+  ]
+});
 
-    const options = {
-        method:"POST",
-        host:"10.116.0.2",
-        path:"/webhook",
-        body: datosCodificados,
-        headers:{
-            "Content-Type":"application",
+let config = {
+  method: 'get',
+  maxBodyLength: Infinity,
+  url: 'http://137.184.25.28:3000/webhook',
+  headers: { 
+    'Content-Type': 'application/json'
+  },
+  data : data
+};
+
+axios.request(config)
+.then((response) => {
+  console.log(JSON.stringify(response.data));
+})
+.catch((error) => {
+  console.log(error);
+});
+
+        }catch(e){
+            console.log(e)
         }
     }
-
-    const req = https.request(options,res =>{
-        res.on("data", d=>{
-            process.stdout.write(d)
-        })
-    })
-
-    req.on("error", error=>{
-        console.log(error);
-    })
-
-    req.write(datosCodificados)
-    req.end()
     
-}catch(e){
-    console.log(e)
-}
+    ,1000
+);
