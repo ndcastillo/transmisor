@@ -1,4 +1,8 @@
 const https = require('https');
+const axios = require('axios');
+
+
+
 function getRandomNumber(max){
     return Math.floor(Math.random()*max);
 }
@@ -8,7 +12,6 @@ function getRandomNumber(max){
 setInterval(
     ()=>{
         try{
-            const axios = require('axios');
 let data = JSON.stringify({
   "timestamp": new Date().getTime(),
   "data": [
